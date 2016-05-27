@@ -18,9 +18,10 @@ var app = express();
 
 var COMMENTS_FILE = path.join(__dirname, 'comments.json');
 var PRODUCTS_FILE = path.join(__dirname, 'tsconfig.json');
+var TODO_FILE = path.join(__dirname, 'TODO.json');
 
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 8080));
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -80,10 +81,10 @@ app.post('/api/toDoForm', function(req, res) {
     // treat Date.now() as unique-enough for our purposes.
     var newComment = {
       id: Date.now(),
-      content: req.body.content
+      text: req.body.text
     };
     comments.push(newComment);
-    fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), function(err) {
+    fs.writeFile(TODO_FILE, JSON.stringify(comments, null, 4), function(err) {
       if (err) {
         console.error(err);
         process.exit(1);
@@ -110,7 +111,7 @@ app.post('/api/comments', function(req, res) {
     var newComment = {
       id: Date.now(),
       author: req.body.author,
-      text: req.body.text,
+      text: req.body.text
     };
     comments.push(newComment);
     fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), function(err) {
